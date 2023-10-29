@@ -28,7 +28,6 @@ pragma solidity 0.8.22;
  * @dev This contract allows users to deposit any token into the smart contract and receive USDC in return.
  * The contract owner can withdraw USDC from the smart contract.
  * The contract uses the Cow Protocol to handle the swap and ensure that the contract only receives USDC.
- * The contract owner can update the address of the Cow Protocol if needed.
  */
 contract USDCGateway {
     /////////////////////
@@ -70,12 +69,6 @@ contract USDCGateway {
     function withdrawUSDC() external {
         // TODO: Logic to withdraw USDC
         emit Withdrawn(msg.sender, 0);
-    }
-
-    // If the address of the Cow Protocol might change, the contract owner can update it
-    function setCowProtocolAddress(address _newAddress) external {
-        // TODO: Logic to set the new Cow Protocol address
-        s_cowProtocolAddress = _newAddress;
     }
 
     ///////////////////////////////////////
