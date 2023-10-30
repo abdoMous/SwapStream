@@ -23,6 +23,8 @@
 
 pragma solidity 0.8.22;
 
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 /*
  * @title USDCGateway
  * @dev This contract allows users to deposit any token into the smart contract and receive USDC in return.
@@ -30,6 +32,14 @@ pragma solidity 0.8.22;
  * The contract uses the Cow Protocol to handle the swap and ensure that the contract only receives USDC.
  */
 contract USDCGateway {
+    ///////////////////////
+    // Type declarations //
+    ///////////////////////
+    struct Payment {
+        IERC20 token;
+        uint256 amount;
+    }
+
     /////////////////////
     // State Variables //
     /////////////////////
@@ -38,7 +48,7 @@ contract USDCGateway {
     address public s_cowProtocolAddress;
 
     // Mapping to store USDC balance for each address
-    mapping(address => uint256) public s_usdcBalances;
+    mapping(address => Payment) public s_payments;
 
     ////////////
     // Events //
@@ -60,9 +70,11 @@ contract USDCGateway {
     }
 
     // Allows users to deposit any token into the smart contract
-    function depositAssets() external {
-        // TODO: Logic to deposit assets
-        emit Deposited(msg.sender, 0, address(0)); // Update the amount and token address accordingly
+    function depositAssets(address tokenAddress, uint256 amount) external payable {
+        IERC20 token = IERC20(tokenAddress);
+        require(token.transferFrom(msg.sender, address(this), amount), "Transfer failed");
+        s_payments[msg.sender] = Payment(token, amount);
+        emit Deposited(msg.sender, msg.value, tokenAddress); // Update the amount and token address accordingly
     }
 
     // Allows users or the contract owner to withdraw USDC from the smart contract
