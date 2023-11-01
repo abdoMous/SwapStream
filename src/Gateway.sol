@@ -21,17 +21,17 @@
 // private
 // view & pure functions
 
-pragma solidity 0.8.22;
+pragma solidity ^0.8.18;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /*
- * @title USDCGateway
+ * @title Gateway
  * @dev This contract allows users to deposit any token into the smart contract and receive USDC in return.
  * The contract owner can withdraw USDC from the smart contract.
  * The contract uses the Cow Protocol to handle the swap and ensure that the contract only receives USDC.
  */
-contract USDCGateway {
+contract Gateway {
     ///////////////////////
     // Type declarations //
     ///////////////////////
